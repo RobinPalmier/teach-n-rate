@@ -1,2 +1,2 @@
 const mongoose = require('mongoose');
-const Module = require('../models/moduleModel');
+const Module = require('../models/modulesModel');
