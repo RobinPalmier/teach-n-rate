@@ -1,5 +1,5 @@
  // src/api/routes/postRoute.js
-const userController = require('../controllers/userController');
+const userController = require('../controllers/usersController');
 const jwtMiddleware = require('../middleware/jwt-middleware');
 
 // Exporte la fonction anonyme
