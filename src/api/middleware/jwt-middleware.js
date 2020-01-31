@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 
 exports.verify_token = (req, res, next) => {
