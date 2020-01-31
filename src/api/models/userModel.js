@@ -9,7 +9,6 @@ let userSchema = new Schema ({
         	type: String,
 		required: true
 	},
-
 	name_user:{
 		type: String,
 		required: true
@@ -19,6 +18,10 @@ let userSchema = new Schema ({
 		required: true
 	},
 	password_user:{
+		type: String,
+		required: true
+	},
+	sessions_id:{
 		type: String,
 		required: true
 	}
