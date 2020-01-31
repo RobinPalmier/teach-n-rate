@@ -82,7 +82,7 @@ exports.delete_user = (req, res) => {
       }
       else{
         res.status(200);
-        res.json({message: "Article supprimé"})
+        res.json({message: "utilisateur supprimé"})
       }
     })
   } catch (e) {

@@ -81,7 +81,7 @@ exports.delete_module = (req, res) => {
       }
       else{
         res.status(200);
-        res.json({message: "Article supprimé"})
+        res.json({message: "Module supprimé"})
       }
     })
   } catch (e) {
