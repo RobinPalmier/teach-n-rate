@@ -1,11 +1,12 @@
  // src/api/routes/postRoute.js
-const userController = require('../controllers/userController');
+const userController = require('../controllers/usersController');
+const jwtMiddleware = require('../middleware/jwt-middleware');
 
 // Exporte la fonction anonyme
 module.exports = (app) => {
   app.route('/users')
   .get(userController.get_all_users)
-  .post(userController.create_a_user);
+  .post(jwtMiddleware.verify_token, userController.create_a_user);
 
   app.route('/users/login')
   .post(userController.login);
