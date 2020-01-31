@@ -54,7 +54,7 @@ exports.add_user = (req, res) => {
 
 exports.update_user = (req, res) => {
   try {
-    User.findByIdAndUpdate(req.params.user_id, req.body, {new:true}, (error, post) => {
+    User.findByIdAndUpdate(req.params.user_id, req.body, {new:true}, (error, user) => {
       if(error){
         res.status(400);
         console.log(error);
@@ -62,7 +62,7 @@ exports.update_user = (req, res) => {
       }
       else{
         res.status(200);
-        res.json(post)
+        res.json(user)
       }
     })
   } catch (error) {
