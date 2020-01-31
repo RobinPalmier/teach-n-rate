@@ -1,5 +1,5 @@
  // src/api/routes/postRoute.js
- const sessionController = require('../controllers/sessionController');
+ const sessionController = require('../controllers/sessionsController');
 
  // Exporte la fonction anonyme
  module.exports = (app) => {

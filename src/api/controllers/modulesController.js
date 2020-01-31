@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Module = require('../models/moduleModel');
+const Module = require('../models/modulesModel');
 
 exports.get_all_module = (req, res) => {
   Module.find({}, (errors, module)=>{
