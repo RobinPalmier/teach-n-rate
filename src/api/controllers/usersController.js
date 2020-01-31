@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const Module = require('../models/modulesModel');
+const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 
-exports.get_all_module = (req, res) => {
-  Module.find({}, (errors, module)=>{
+exports.get_all_users = (req, res) => {
+  User.find({}, (errors, user)=>{
     if (error) {
       res.status(500);
       console.log(error);
@@ -10,13 +11,13 @@ exports.get_all_module = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(module);
+      res.json(user);
     }
   })
 }
 
-exports.get_one_module = (req, res) => {
-  Module.findById(req.params.module_id, (error, module)=>{
+exports.get_one_user = (req, res) => {
+  User.findById(req.params.user_id, (error, user)=>{
     if (error) {
       res.status(500);
       console.log(error);
@@ -24,15 +25,15 @@ exports.get_one_module = (req, res) => {
     }
     else {
       res.status(201);
-      res.json(module);
+      res.json(user);
     }
   })
 }
 
-exports.add_module = (req, res) => {
-  let new_module = new Module(req.body);
+exports.add_user = (req, res) => {
+  let new_user = new User(req.body);
   try{
-    new_module.save((error, module) => {
+    new_user.save((error, user) => {
       if(error){
         res.status(400);
         console.log(error);
@@ -40,7 +41,7 @@ exports.add_module = (req, res) => {
       }
       else {
         res.status(201);
-        res.json(module);
+        res.json(user);
       }
     })
   }
@@ -51,9 +52,9 @@ exports.add_module = (req, res) => {
   }
 }
 
-exports.update_module = (req, res) => {
+exports.update_user = (req, res) => {
   try {
-    Module.findByIdAndUpdate(req.params.module_id, req.body, {new:true}, (error, module) => {
+    User.findByIdAndUpdate(req.params.user_id, req.body, {new:true}, (error, user) => {
       if(error){
         res.status(400);
         console.log(error);
@@ -61,7 +62,7 @@ exports.update_module = (req, res) => {
       }
       else{
         res.status(200);
-        res.json(module)
+        res.json(user)
       }
     })
   } catch (error) {
@@ -71,9 +72,9 @@ exports.update_module = (req, res) => {
   }
 }
 
-exports.delete_module = (req, res) => {
+exports.delete_user = (req, res) => {
   try {
-    Module.findByIdAndRemove(req.params.module_id, (error) => {
+    User.findByIdAndRemove(req.params.user_id, (error) => {
       if(error){
         res.status(400);
         console.log(error);
@@ -90,3 +91,22 @@ exports.delete_module = (req, res) => {
     res.json({message: "Erreur serveur"})
   }
 }
+
+exports.user_login = (req, res) => {
+  let {body} = req;
+  User.findOne(body, (mongooseError, user) => {
+    jwt.sign({email: user.email}, process.env.JWT_KEY, {expiresIn: "10m"}, (jwtError, token) => {
+      if(jwtError){
+        console.log(jwtError);
+        res.status(500);
+        res.json({message: "Erreur serveur"});
+      }
+      else {
+        res.status(200);
+        res.json({token});
+      }
+    })
+  })
+}
+
+// user.findOne({email: 'ergherigk'}, (err,resultat) => resultat._id; Module.findOneAndUpdate({nom_module:""},{id_user:resultat._id}))
