@@ -1,11 +1,12 @@
  // src/api/routes/postRoute.js
  const moduleController = require('../controllers/moduleController');
+ const jwtMiddleware = require('../middleware/jwt-middleware');
 
  // Exporte la fonction anonyme
  module.exports = (app) => {
    app.route('/modules')
    .get(moduleController.get_all_modules)
-   .post(moduleController.create_a_module);
+   .post(jwtMiddleware.verify_token, moduleController.create_a_module);
  
    app.route('/modules/:module_id')
    .get(moduleController.get_one_module)
