@@ -20,7 +20,7 @@ exports.get_one_session = (req, res) => {
     if (error) {
       res.status(500);
       console.log(error);
-      res.send({message : "this id doesn't exist"});
+      res.send({message : "This id doesn't exist"});
     }
     else {
       res.status(201);
@@ -37,7 +37,7 @@ exports.add_session = (req, res) => {
       if(error){
         res.status(400);
         console.log(error);
-        res.send({message : "missing data"})
+        res.send({message : "Missing data"})
       }
       else {
         res.status(201);
@@ -48,7 +48,7 @@ exports.add_session = (req, res) => {
   catch(error){
     res.status(500);
     console.log(error);
-    res.json({message : "server error"});
+    res.json({message : "Server error"});
   }
 }
 
@@ -72,7 +72,7 @@ exports.update_session = (req, res) => {
   }
 }
 
-exports.delete_user = (req, res) => {
+exports.delete_session = (req, res) => {
   try {
     User.findByIdAndRemove(req.params.session_id, (error) => {
       if(error){
@@ -82,7 +82,7 @@ exports.delete_user = (req, res) => {
       }
       else{
         res.status(200);
-        res.json({message: "session supprimé"})
+        res.json({message: "Session supprimé"})
       }
     })
   } catch (e) {

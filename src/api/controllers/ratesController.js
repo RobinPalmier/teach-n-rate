@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Rate = require('../models/rateModel');
 
 exports.get_module_rates = (req, res) => {
-  Rate.find({modules_id : req.params.modules_id}, (errors, rates)=>{
+  Rate.find({modules_id : req.params.modules_id}, (error, rates)=>{
     if (error) {
       res.status(500);
       console.log(error);

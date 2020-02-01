@@ -12,12 +12,12 @@ let modulesSchema = new Schema ({
     
     teacher_id:{
         type: String,
-        default:required
+        required: true
     },
 
     sessions_id:{
         type: String,
-        default:required
+        required: true
     },
 
     starting_date:{
