@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 
 exports.get_all_users = (req, res) => {
-  User.find({}, (errors, user)=>{
+  User.find({}, (error, users)=>{
     if (error) {
       res.status(500);
       console.log(error);
@@ -11,7 +11,7 @@ exports.get_all_users = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(user);
+      res.json(users);
     }
   })
 }
@@ -94,8 +94,8 @@ exports.delete_user = (req, res) => {
 
 exports.user_login = (req, res) => {
   let {body} = req;
-  User.findOne(body, (mongooseError, user) => {
-    jwt.sign({email: user.email}, process.env.JWT_KEY, {expiresIn: "10m"}, (jwtError, token) => {
+  User.findOne({email: body.email, password: body.password}, (mongooseError, user) => {
+    jwt.sign({mail_user: body.email}, process.env.JWT_KEY, {expiresIn: "10m"}, (jwtError, token) => {
       if(jwtError){
         console.log(jwtError);
         res.status(500);

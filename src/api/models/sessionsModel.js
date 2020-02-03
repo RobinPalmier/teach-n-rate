@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 
 let sessionsSchema = new Schema ({
 
-    promo_name:{
+    name:{
 		type: String,
 		required: true
 	},
 
-	promo_year:{
+	year:{
 		type: Number,
         	default: Date.now,
         	min: 2000,

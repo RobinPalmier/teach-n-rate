@@ -18,10 +18,12 @@ app.use(bodyParser.json());
 const userRoute = require('./api/routes/userRoute');
 const sessionRoute = require('./api/routes/sessionRoute');
 const rateRoute = require('./api/routes/rateRoute');
+const moduleRoute = require('./api/routes/moduleRoute');
 // Utilise la fonction anonyme contenu dans la constante
 userRoute(app);
 rateRoute(app);
 sessionRoute(app);
+moduleRoute(app);
 
 
 app.listen(port, hostname);
