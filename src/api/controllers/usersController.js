@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/userModel');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.get_all_users = (req, res) => {
@@ -31,25 +32,39 @@ exports.get_one_user = (req, res) => {
 }
 
 exports.add_user = (req, res) => {
-  let new_user = new User(req.body);
-  try{
-    new_user.save((error, user) => {
-      if(error){
-        res.status(400);
-        console.log(error);
-        res.send({message : "missing data"})
-      }
-      else {
-        res.status(201);
-        res.json(user);
-      }
-    })
-  }
-  catch(error){
-    res.status(500);
-    console.log(error);
-    res.json({message : "server error"});
-  }
+  User.findOne({email: req.body.email}, (error, user) => {
+    if(error) {
+      console.log(error);
+    }
+    if(user) {
+      res.status(400);
+      res.send({message: "User already exist"})
+    }
+    if(user == null) {
+      console.log(req.body)
+      bcrypt.hash(req.body.password, 9).then((hash) => {
+        let new_user = new User({name: req.body.name, email: req.body.email, password: hash, sessions_id: req.body.sessions_id, status: req.body.status});
+        try{
+          new_user.save((error, user) => {
+            if(error){
+              res.status(400);
+              console.log(error);
+              res.send({message : "missing data"})
+            }
+            else {
+              res.status(201);
+              res.json(user);
+            }
+          })
+        }
+        catch(error){
+          res.status(500);
+          console.log(error);
+          res.json({message : "server error"});
+        }
+      })
+    }
+  })
 }
 
 exports.update_user = (req, res) => {
@@ -94,18 +109,27 @@ exports.delete_user = (req, res) => {
 
 exports.user_login = (req, res) => {
   let {body} = req;
-  User.findOne({email: body.email, password: body.password}, (mongooseError, user) => {
-    jwt.sign({mail_user: body.email}, process.env.JWT_KEY, {expiresIn: "10m"}, (jwtError, token) => {
-      if(jwtError){
-        console.log(jwtError);
-        res.status(500);
-        res.json({message: "Erreur serveur"});
+  User.findOne({email: body.email}, (mongooseError, user) => {
+    if(user == null) {
+      res.status(400);
+      res.send({message: "Account does not exist"})
+    } else {
+      let isValidPassword = bcrypt.compareSync(body.password, user.password);
+      if(!isValidPassword) {
+        return res.status(401).send({message: "Invalid password"});
       }
-      else {
-        res.status(200);
-        res.json({token});
-      }
-    })
+      jwt.sign({mail: body.email}, process.env.JWT_KEY, {expiresIn: "10m"}, (jwtError, token) => {
+        if(jwtError){
+          console.log(jwtError);
+          res.status(500);
+          res.json({message: "Erreur serveur"});
+        }
+        else {
+          res.status(200);
+          res.json({userDatas: {token, name: user.name, email: user.email, sessions_id: user.sessions_id, status: user.status, id: user._id}});
+        }
+      })
+    }
   })
 }
 
