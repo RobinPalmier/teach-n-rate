@@ -126,7 +126,7 @@ exports.user_login = (req, res) => {
         }
         else {
           res.status(200);
-          res.json({userDatas: {token, name: user.name, email: user.email, sessions_id: user.sessions_id, status: user.status}});
+          res.json({userDatas: {token, name: user.name, email: user.email, sessions_id: user.sessions_id, status: user.status, id: user._id}});
         }
       })
     }
